@@ -28,3 +28,6 @@ def calculate(expression):
     elif 'sqrt' in expression:
         value = float(expression.replace('sqrt', '').strip('() '))
         return round(math.sqrt(value), 4)
+    elif 'x^2' in expression:
+        value = float(expression.replace('x^2', '').strip('() '))
+        return round(value ** 2, 4)
