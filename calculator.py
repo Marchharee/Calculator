@@ -43,3 +43,5 @@ def calculate(expression):
     elif 'exp' in expression:
        value = float(expression.replace('exp', '').strip('() '))
        return round(math.exp(value), 4)
+    else:
+       return round(eval(expression), 4)  # Evaluate the arithmetic expression
