@@ -34,3 +34,6 @@ def calculate(expression):
     elif 'inv' in expression:
         value = float(expression.replace('inv', '').strip('() '))
         return round(1 / value, 4)
+    elif 'fact' in expression:
+        value = int(expression.replace('fact', '').strip('() '))
+        return round(math.factorial(value), 4)
