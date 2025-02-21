@@ -26,4 +26,5 @@ def calculate(expression):
         base, exponent = expression.split('^')
         return round(float(base.strip()) ** float(exponent.strip()), 4)
     elif 'sqrt' in expression:
-        
+        value = float(expression.replace('sqrt', '').strip('() '))
+        return round(math.sqrt(value), 4)
