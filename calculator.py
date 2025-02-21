@@ -31,3 +31,6 @@ def calculate(expression):
     elif 'x^2' in expression:
         value = float(expression.replace('x^2', '').strip('() '))
         return round(value ** 2, 4)
+    elif 'inv' in expression:
+        value = float(expression.replace('inv', '').strip('() '))
+        return round(1 / value, 4)
