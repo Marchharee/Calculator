@@ -37,3 +37,9 @@ def calculate(expression):
     elif 'fact' in expression:
         value = int(expression.replace('fact', '').strip('() '))
         return round(math.factorial(value), 4)
+    elif 'ln' in expression:
+       value = float(expression.replace('ln', '').strip('() '))
+       return round(math.log(value), 4)
+    elif 'exp' in expression:
+       value = float(expression.replace('exp', '').strip('() '))
+       return round(math.exp(value), 4)
