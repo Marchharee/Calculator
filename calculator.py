@@ -22,3 +22,8 @@ def calculate(expression):
     elif 'arctan' in expression:
         value = float(expression.replace('arctan', '').strip('() '))
         return round(math.degrees(math.atan(value)), 4)
+    elif '^' in expression:
+        base, exponent = expression.split('^')
+        return round(float(base.strip()) ** float(exponent.strip()), 4)
+    elif 'sqrt' in expression:
+        
