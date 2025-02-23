@@ -1,81 +1,86 @@
-
 #import required modules
 #create graphical user interfaces
 import tkinter as tk
 #allow displaying popup alerts
 from tkinter import messagebox
-#import math(a built-in library for mathematical functions)
-import math
-
-
-class Calculator:
-   """"create a new defined class"""
-    
-   def __init__(self, root):
-        """initialize the calculator"""
+from calculator_function import calculate
+class CalculatorGUI:
+    """"create a new defined class"""
+    def __init__(self, root):
         #create root as main application window
         self.root = root
         #set the window title
-        self.root.title("Classic Calculator")
+        self.root.title("Scientific Calculator")
         #set the window size
         self.root.geometry("400x600")
+        self.root.resizable(False, False)  
+        
         #store the mathmatical expression entered by the user
         self.expression = ""
+        
         #create a stringvar variable slinked to the user's input
         self.input_text = tk.StringVar()
-        #create the input field and buttons
-        self.create_widgets()
+        self.entry = tk.Entry(root, textvariable=self.input_text, font=("Arial", 20), justify="right", bd=10, relief=tk.GROOVE)
+        self.entry.pack(padx=10, pady=10, fill="x")
         
-   def create_widgets(self):
-        """create the input field and buttons for the calculator"""
-        #create the entry field 
-        entry_frame = tk.Frame(self.root)
-        #allow the frame to fill width and height
-        entry_frame.pack(expand=True, fill="both")
-        #create a input box and set the font size set the border width
-        entry = tk.Entry(entry_frame, font=("Arial", 20), textvariable=self.input_text, justify="right", bd=10, relief=tk.GROOVE)
-        entry.pack(expand=True, fill="both")
-        #create the button box
-        button_frame = tk.Frame(self.root)
-        button_frame.pack(expand=True, fill="both")
+        
+        self.create_buttons()
+    
+    def create_buttons(self):
+        '''Creating the calculator buttons'''
         #create digital buttons
         buttons = [
-            ("7", "8", "9", "/"),
-            ("4", "5", "6", "*"),
-            ("1", "2", "3", "-"),
-            ("0", ".", "=", "+"),
+            ["7", "8", "9", "/"],
+            ["4", "5", "6", "*"],
+            ["1", "2", "3", "-"],
+            ["0", ".", "π", "+"],
+            ["sin", "cos", "tan", "sqrt"],
+            ["arcsin", "arccos", "arctan", "^"],
+            ["ln", "exp", "fact", "x^2"],
+            ["C", "Del", "(", ")"],
+            ["="]
         ]
-        #create calculate buttons
-        sci_buttons = [
-            ("sin", "cos", "tan", "√"),
-            ("asin", "acos", "atan", "x²"),
-            ("C", "(", ")", "Del"),
-        ]
-        #loops for each row
+        
+        #Iterate through the button list, create a Frame for each row, and add buttons to it
         for row in buttons:
             #create a row container for each button
-            row_frame = tk.Frame(button_frame)
-            row_frame.pack(expand=True, fill="both")
-            #loops through each button label
-            for btn_text in row:
-                #create button inside frame set the button label set font size
-                btn = tk.Button(row_frame, text=btn_text, font=("Arial", 15), command=lambda b=btn_text: self.on_button_click(btn))
-                #allow button to fill the space and make button fill the containers
-                btn.pack(side="left", expand=True, fill="both")
-        #loops for each row
-        for row in sci_buttons:
-            #create a new row container
-            row_frame = tk.Frame(button_frame)
-            row_frame.pack(expand=True, fill="both")
-            #loops through button label
-            for btn_text in row:
-                #create buttons with text label and font size
-                btn = tk.Button(row_frame, text=btn_text, font=("Arial", 15), command=lambda b=btn_text: self.on_sci_button_click(btn))
-                #arrange buttons in the row
-                btn.pack(side="left", expand=True, fill="both")
+            frame = tk.Frame(self.root)
+            frame.pack(expand=True, fill="both")
+            for btn in row:
+                #Bind click events for each button, call the onbuttonclick method
+                button = tk.Button(frame, text=btn, font=("Arial", 15),
+                                   command=lambda b=btn: self.on_button_click(b))
+                button.pack(side="left", expand=True, fill="both", padx=2, pady=2)
+    
+    def on_button_click(self, btn):
+        """Button click event handling function:
+        - "=" Calculation result
+        - "C" Clear input
+        - "Del" deletes the last one
+        - Other buttons are appended to the expression
+        """
+        if btn == "=":
+            try:
+                result = calculate(self.expression)
+                self.input_text.set(str(result))
+                self.expression = str(result)
+            except Exception as e:
+                messagebox.showerror("Error", "Invalid Expression")
+                self.expression = ""
+                self.input_text.set("")
+        elif btn == "C":
+            self.expression = ""
+            self.input_text.set("")
+        elif btn == "Del":
+            self.expression = self.expression[:-1]
+            self.input_text.set(self.expression)
+        else:
+            #Append button text to the current expression
+            self.expression += btn
+            self.input_text.set(self.expression)
+
 
 if __name__ == "__main__":
     root = tk.Tk()
-    Calculator(root)
+    app = CalculatorGUI(root)
     root.mainloop()
-
